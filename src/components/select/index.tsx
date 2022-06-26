@@ -41,7 +41,7 @@ export const Select = ({options, prompt, value, onChange}: Props) => {
     <div className={styles.root}>
       <div className={styles.dropdown}>
         <div className={styles.control} onClick={() => setOpen((prev) => !prev)}>
-          <div className={`${styles.selected__value} ${open ? styles.open : null}`} > 
+          <div className={`${styles.selected_value} ${open ? styles.open : null}`} > 
             {value ? value : prompt}
             </div>
 
