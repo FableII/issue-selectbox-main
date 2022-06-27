@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
 
+
 type Props = {
   options: Array<string>,
   prompt: string;
@@ -25,23 +26,34 @@ export const Select = ({options, prompt, value, onChange}: Props) => {
     return () => document.removeEventListener('keydown', close);
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('click', focusOnInput);
+    return () => document.removeEventListener('click', close);
+  }, []);
+
+  function focusOnInput() {
+   document.querySelector('input')?.focus();
+  }
+  
+
   function close(e:any) {
-    if(e.keyCode === 27 /* || e.type === 'click' */) {
+    if(e.keyCode === 27 || e.target.className === 'app_root__RrMQF') {
       setOpen(e && e.target === ref.current)
     }
-  }
+  };
 
   function filter (options: Array<string>) {
     return options.filter(
       (option:string) => 
       option.toLowerCase().indexOf(query.toLowerCase()) > -1)
-  }
+  };
 
   return (
     <div className={styles.root}>
       <div className={styles.dropdown}>
-        <div className={styles.control} onClick={() => setOpen((prev) => !prev)}>
-          <div className={`${styles.selected_value} ${open ? styles.open : null}`} > 
+        <div className={styles.control} 
+        onClick={() => setOpen((prev) => !prev)}>
+          <div className={`${styles.selected_value} ${open ? styles.open : null}`}> 
             {value ? value : prompt}
             </div>
 
@@ -55,7 +67,8 @@ export const Select = ({options, prompt, value, onChange}: Props) => {
                 onChange(null)
               }}
               onClick = {() => setOpen(prev => !prev)}
-              ref={ref}/>
+              ref={ref}
+              />
             </div>
 
           <div className={`${styles.arrow} ${open ? styles.open : null}`}></div>
